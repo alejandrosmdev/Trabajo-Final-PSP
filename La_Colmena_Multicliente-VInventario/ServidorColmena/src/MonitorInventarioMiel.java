@@ -1,3 +1,6 @@
+/**
+ * Monitor que verifica periódicamente el nivel de miel en el inventario.
+ */
 public class MonitorInventarioMiel extends Thread {
     private InventarioMiel inventario;
     private boolean running = true;

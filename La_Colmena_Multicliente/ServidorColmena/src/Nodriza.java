@@ -1,5 +1,8 @@
 import java.util.Random;
 
+/**
+ * Representa a una abeja nodriza que alimenta a los zánganos.
+ */
 public class Nodriza extends Thread {
     private int identificador;
     private Random random = new Random();
@@ -31,6 +34,10 @@ public class Nodriza extends Thread {
     }
 
     public synchronized int alimentar(String zangano) {
+        if (ocupada) {
+            System.out.println("Nodriza-" + identificador + ": Ya está ocupada, pero atenderá a " + zangano);
+        }
+
         ocupada = true;
         int tiempoAlimentacion = random.nextInt(3) + 3; // 3 a 5 segundos
         System.out.println("Nodriza-" + identificador + ": Alimentando a " + zangano + " durante " + tiempoAlimentacion + " segundos.");
@@ -48,7 +55,7 @@ public class Nodriza extends Thread {
         return tiempoAlimentacion;
     }
 
-    public boolean estaOcupada() {
+    public synchronized boolean estaOcupada() {
         return ocupada;
     }
 
@@ -64,4 +71,3 @@ public class Nodriza extends Thread {
         interrupt();
     }
 }
-

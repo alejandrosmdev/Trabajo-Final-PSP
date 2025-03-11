@@ -1,8 +1,10 @@
-// Archivo en el proyecto del cliente
 import java.io.*;
 import java.net.*;
 import java.util.Random;
 
+/**
+ * Representa a una abeja recolectora que produce miel.
+ */
 public class Recolectora extends Thread {
     private static final String HOST = "localhost";
     private static final int PUERTO = 5000;

@@ -2,6 +2,9 @@ import java.io.*;
 import java.net.*;
 import java.util.Random;
 
+/**
+ * Representa a una abeja limpiadora que solicita zonas a la reina y las limpia.
+ */
 public class Limpiadora extends Thread {
     private static final String HOST = "localhost";
     private static final int PUERTO = 5000;
@@ -22,14 +25,7 @@ public class Limpiadora extends Thread {
 
             while (!Thread.currentThread().isInterrupted()) {
                 solicitarZona();
-
-                // Esperar un tiempo antes de solicitar otra zona
-                try {
-                    Thread.sleep(random.nextInt(5000) + 2000);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    break;
-                }
+                // No hay espera adicional, vuelve inmediatamente a pedir otra zona
             }
         } finally {
             desconectar();
@@ -62,7 +58,7 @@ public class Limpiadora extends Thread {
             int tiempoLimpieza = random.nextInt(8) + 3; // 3 a 10 segundos
             System.out.println("Limpiadora-" + id + ": Limpiando " + zona + " durante " + tiempoLimpieza + " segundos.");
             Thread.sleep(tiempoLimpieza * 1000);
-            System.out.println("Limpiadora-" + id + ": " + zona + " limpia.");
+            System.out.println("Limpiadora-" + id + ": " + zona + " limpia. Volviendo a solicitar nueva zona.");
         } catch (IOException e) {
             System.out.println("Limpiadora-" + id + ": Error al comunicarse con el servidor: " + e.getMessage());
             reconectar();
@@ -98,4 +94,3 @@ public class Limpiadora extends Thread {
         }
     }
 }
-

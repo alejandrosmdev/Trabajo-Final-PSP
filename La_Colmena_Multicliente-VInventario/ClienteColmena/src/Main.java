@@ -2,6 +2,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Clase principal del cliente que inicia todas las abejas.
+ */
 public class Main {
     public static void main(String[] args) {
         List<Thread> abejas = new ArrayList<>();
@@ -16,7 +19,7 @@ public class Main {
             abejas.add(new Limpiadora(i));
         }
 
-        // Inicializar 10 Recolectoras
+        // Inicializar 3 Recolectoras
         for (int i = 1; i <= 3; i++) {
             abejas.add(new Recolectora(i));
         }

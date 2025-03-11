@@ -1,9 +1,13 @@
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Hilo que gestiona la comunicación con cada abeja conectada al servidor.
+ */
 public class HiloServicioAbeja extends Thread {
     private Socket clienteSocket;
     private DataInputStream in;
@@ -39,7 +43,7 @@ public class HiloServicioAbeja extends Thread {
             out.writeUTF("Conexión establecida con el servidor de la colmena");
 
             boolean continuar = true;
-            while (continuar) {
+            while (continuar && reina.isRunning()) {
                 try {
                     String solicitud = in.readUTF();
                     procesarSolicitud(solicitud);
@@ -76,10 +80,39 @@ public class HiloServicioAbeja extends Thread {
             case "SOLICITAR_ALIMENTO":
                 // Las nodrizas alimentan a los zánganos
                 if (tipoCliente.startsWith("Zangano") && nodrizas != null && !nodrizas.isEmpty()) {
-                    // Seleccionar una nodriza aleatoria
-                    Nodriza nodriza = nodrizas.get(random.nextInt(nodrizas.size()));
-                    int tiempoAlimentacion = nodriza.alimentar(tipoCliente);
-                    out.writeUTF("Alimentación completada por Nodriza-" + nodriza.getIdentificador() + " en " + tiempoAlimentacion + " segundos.");
+                    // Buscar nodrizas libres
+                    List<Nodriza> nodrizasLibres = new ArrayList<>();
+                    for (Nodriza nodriza : nodrizas) {
+                        if (!nodriza.estaOcupada()) {
+                            nodrizasLibres.add(nodriza);
+                        }
+                    }
+
+                    Nodriza nodrizaSeleccionada;
+                    if (!nodrizasLibres.isEmpty()) {
+                        // Seleccionar una nodriza libre aleatoriamente
+                        nodrizaSeleccionada = nodrizasLibres.get(random.nextInt(nodrizasLibres.size()));
+                        System.out.println(tipoCliente + " selecciona aleatoriamente a Nodriza-" +
+                                nodrizaSeleccionada.getIdentificador() + " que está libre");
+                    } else {
+                        // Si no hay nodrizas libres, esperar a que alguna se libere
+                        System.out.println(tipoCliente + " espera porque todas las nodrizas están ocupadas");
+                        out.writeUTF("Todas las nodrizas están ocupadas. Espera un momento...");
+
+                        // Esperar un tiempo aleatorio antes de intentar de nuevo
+                        try {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                        }
+
+                        // Seleccionar una nodriza aleatoria (posiblemente aún ocupada)
+                        nodrizaSeleccionada = nodrizas.get(random.nextInt(nodrizas.size()));
+                    }
+
+                    int tiempoAlimentacion = nodrizaSeleccionada.alimentar(tipoCliente);
+                    out.writeUTF("Alimentación completada por Nodriza-" + nodrizaSeleccionada.getIdentificador() +
+                            " en " + tiempoAlimentacion + " segundos.");
                 } else {
                     out.writeUTF("No hay nodrizas disponibles o no eres un zángano");
                 }
@@ -117,4 +150,3 @@ public class HiloServicioAbeja extends Thread {
         }
     }
 }
-

@@ -2,6 +2,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Clase principal del servidor que inicia todos los componentes de la colmena.
+ */
 public class Main {
     public static void main(String[] args) {
         // Inicializar el inventario de miel (se crea automáticamente al obtener la instancia)
@@ -13,7 +16,7 @@ public class Main {
 
         // Iniciar la Reina
         Reina reina = new Reina();
-        reina.start();
+        System.out.println("Reina iniciada y lista para dar órdenes");
 
         // Iniciar las Nodrizas
         List<Nodriza> nodrizas = new ArrayList<>();
@@ -33,7 +36,7 @@ public class Main {
 
         // Crear un hilo para aceptar conexiones
         Thread hiloConexiones = new Thread(() -> {
-            while (true) {
+            while (reina.isRunning()) {
                 java.net.Socket clienteSocket = servidor.aceptarConexion();
                 if (clienteSocket != null) {
                     HiloServicioAbeja hiloServicio = new HiloServicioAbeja(clienteSocket, reina);

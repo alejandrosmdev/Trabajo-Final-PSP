@@ -1,8 +1,10 @@
-// Archivo en el proyecto del cliente
 import java.io.*;
 import java.net.*;
 import java.util.Random;
 
+/**
+ * Representa a un zángano que busca reinas y solicita alimento.
+ */
 public class Zangano extends Thread {
     private static final String HOST = "localhost";
     private static final int PUERTO = 5000;
@@ -67,10 +69,12 @@ public class Zangano extends Thread {
             String respuesta = in.readUTF();
             System.out.println("Zángano-" + id + ": " + respuesta);
 
-            // Si no hay suficiente miel, esperar un tiempo antes de volver a intentar
-            if (respuesta.contains("No hay suficiente miel")) {
-                System.out.println("Zángano-" + id + ": Esperando a que haya más miel disponible...");
-                Thread.sleep(5000); // Esperar 5 segundos
+            // Si hay un mensaje de espera, esperar antes de continuar
+            if (respuesta.contains("Espera un momento") || respuesta.contains("No hay suficiente miel")) {
+                int tiempoEspera = random.nextInt(3) + 3; // 3-5 segundos
+                System.out.println("Zángano-" + id + ": Esperando " + tiempoEspera + " segundos antes de intentar de nuevo...");
+                Thread.sleep(tiempoEspera * 1000);
+                alimentarse(); // Intentar alimentarse de nuevo
             }
         } catch (IOException e) {
             System.out.println("Zángano-" + id + ": Error al comunicarse con el servidor: " + e.getMessage());

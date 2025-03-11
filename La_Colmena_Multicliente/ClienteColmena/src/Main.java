@@ -17,7 +17,7 @@ public class Main {
         }
 
         // Inicializar 10 Recolectoras
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 3; i++) {
             abejas.add(new Recolectora(i));
         }
 
