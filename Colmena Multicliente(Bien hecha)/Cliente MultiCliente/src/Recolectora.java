@@ -1,6 +1,6 @@
 public class Recolectora extends BeeClient {
     public Recolectora(String host, int port) {
-        super(host, port, "FORAGER");
+        super(host, port, "RECOLECTORA");
     }
 
     @Override

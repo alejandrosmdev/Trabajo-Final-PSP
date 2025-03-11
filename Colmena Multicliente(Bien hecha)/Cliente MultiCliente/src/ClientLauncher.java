@@ -2,10 +2,12 @@ public class ClientLauncher {
     public static void main(String[] args) {
 
 
+        int port = 5000;
+
         // Iniciar varias Abejas Limpiadoras
         for (int i = 0; i < 3; i++) {
             new Thread(() -> {
-                Limpiadora limpiadora = new Limpiadora("localhost", 5000);
+                Limpiadora limpiadora = new Limpiadora("localhost", port);
                 limpiadora.startBee();
             }).start();
         }
@@ -13,7 +15,7 @@ public class ClientLauncher {
         // Iniciar varios Zánganos
         for (int i = 0; i < 3; i++) {
             new Thread(() -> {
-                Zangano zangano = new Zangano("localhost", 5000);
+                Zangano zangano = new Zangano("localhost", port);
                 zangano.startBee();
             }).start();
         }
@@ -21,7 +23,7 @@ public class ClientLauncher {
         // Iniciar varias Abejas Recolectoras
         for (int i = 0; i < 2; i++) {
             new Thread(() -> {
-                Recolectora recolectora = new Recolectora("localhost", 5000);
+                Recolectora recolectora = new Recolectora("localhost", port);
                 recolectora.startBee();
             }).start();
         }

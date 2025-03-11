@@ -32,12 +32,12 @@ public class ClientHandler extends Thread {
                 System.out.println("Recibido de " + clientId + " (" + beeType + "): " + line);
 
                 // Si una limpiadora solicita orden
-                if(line.startsWith("REQUEST_ORDER") && beeType.equals("CLEANER")) {
+                if(line.startsWith("LIMPIADORA_ESPERANDO") && beeType.equals("LIMPIADORA")) {
                     // Se añade a la cola para que la tarea de la Reina la atienda
                     MultiClientServer.orderQueue.put(this);
                 }
                 // Si un zángano solicita alimento
-                else if(line.startsWith("REQUEST_FOOD") && beeType.equals("DRONE")) {
+                else if(line.startsWith("BUSCAR_COMIDA") && beeType.equals("ZANGANO")) {
                     // Se añade a la cola para que la tarea de la Nodriza la atienda
                     MultiClientServer.foodQueue.put(this);
                 }

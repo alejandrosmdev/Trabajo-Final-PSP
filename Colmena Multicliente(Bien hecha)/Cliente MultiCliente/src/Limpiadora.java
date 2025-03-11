@@ -1,6 +1,6 @@
 public class Limpiadora extends BeeClient {
     public Limpiadora(String host, int port) {
-        super(host, port, "CLEANER");
+        super(host, port, "LIMPIADORA");
     }
 
     @Override
@@ -10,11 +10,11 @@ public class Limpiadora extends BeeClient {
                 while (true) {
                     // Solicitar orden (se añade a la cola en el servidor)
                     System.out.println("Limpiadora: solicitando orden");
-                    sendMessage("REQUEST_ORDER");
+                    sendMessage("LIMPIADORA_ESPERANDO");
                     // Espera a recibir la orden enviada por la Reina (tarea en el servidor)
                     String msg = readMessage();
-                    if(msg != null && msg.startsWith("CLEAN:")) {
-                        String zone = msg.substring("CLEAN:".length());
+                    if(msg != null && msg.startsWith("LIMPIAR:")) {
+                        String zone = msg.substring("LIMPIAR:".length());
                         System.out.println("Limpiadora: recibí orden de limpiar " + zone);
                         // Simula el tiempo de limpieza (3 a 10 seg)
                         int time = 3000 + new java.util.Random().nextInt(7000);

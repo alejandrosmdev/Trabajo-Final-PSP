@@ -11,7 +11,7 @@ public class NodrizaServidor implements Runnable {
                 Thread.sleep(feedingTime);
                 System.out.println("Nodriza (Servidor): alimento procesado para zángano " + drone.clientId + " en " + feedingTime/1000.0 + " seg");
                 // Envía la confirmación de alimento al zángano
-                drone.sendMessage("FOOD_PROVIDED");
+                drone.sendMessage("COMIDA_ENVIADA");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
