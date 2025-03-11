@@ -3,6 +3,7 @@ import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.Random;
 
 public class HiloAtenderAbeja extends Thread {
     private Socket socketCliente;
@@ -21,6 +22,9 @@ public class HiloAtenderAbeja extends Thread {
             System.out.println("Tipo de abeja: " + tipoAbeja);
 
             switch (tipoAbeja) {
+                case "Limpiadora":
+                    atenderLimpiadora();
+                    break;
                 case "Zangano":
                     atenderZangano();
                     break;
@@ -36,6 +40,24 @@ public class HiloAtenderAbeja extends Thread {
         }
     }
 
+    private void atenderLimpiadora(){
+        try {
+            System.out.println("Atendiendo Limpiadora - Esperando para hablar con la reina");
+            System.out.println("Atendiendo Limpiadora - Reina encontrada");
+
+//            OutputStream outputStream = socketCliente.getOutputStream();
+//            DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
+//
+//            System.out.println("Atendiendo Limpiadora - Mirando una nueva zona para limpiar");
+//            int nuevaZona = new Random().nextInt(1, 11);
+//            System.out.println("Atendiendo Limpiadora - Nueva zona encontrada");
+//            System.out.println("Atendiendo Limpiadora - Nueva zona: " + nuevaZona);
+//
+//            dataOutputStream.write(nuevaZona);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     private void atenderZangano(){
         try {
@@ -43,7 +65,7 @@ public class HiloAtenderAbeja extends Thread {
             DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
 
             System.out.println("Atendiendo Zangano - Buscando nodriza");
-            Nodriza nodriza = buscarNodrizas();
+            Nodriza nodriza = Main.buscarNodrizas();
             System.out.println("Atendiendo Zangano - Nodriza encontrada");
             System.out.println("Atendiendo Zangano - Nodriza: " + nodriza.getIdNodriza());
 
@@ -59,21 +81,11 @@ public class HiloAtenderAbeja extends Thread {
             DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
 
             System.out.println("Atendiendo Recolectora - Dejando la miel");
+            Main.gestionarMiel(+1);
             dataOutputStream.writeBoolean(true);
             System.out.println("Atendiendo Recolectora - Miel dejada");
         } catch (Exception e) {
             throw new RuntimeException(e);
-        }
-    }
-
-    private Nodriza buscarNodrizas(){
-        while(true) {
-            for (Nodriza nodriza : Main.nodrizas) {
-                if (nodriza.isDisponible()) {
-                    nodriza.setDisponible(false);
-                    return nodriza;
-                }
-            }
         }
     }
 }

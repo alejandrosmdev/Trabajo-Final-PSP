@@ -35,7 +35,7 @@ public class Nodriza extends Obrera {
 
     @Override
     public void run() {
-        while(isDisponible()) {
+        while(true) {
             try {
                 System.out.print("-".repeat(80) + "\n");
 
@@ -47,6 +47,26 @@ public class Nodriza extends Obrera {
                 DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
 
                 System.out.println("Nodriza " + idNodriza + " - Zángano encontrdo");
+
+
+
+
+                System.out.println("Cogiendo miel");
+                do{
+                    boolean flag = Main.gestionarMiel(-1);
+
+                    if(flag == false){
+
+                    } else {
+                        break;
+                    }
+
+                    Thread.sleep(1000);
+                }while(true);
+
+
+
+
 
                 int tiempoParaLaTarea = new Random().nextInt(3, 6);
 

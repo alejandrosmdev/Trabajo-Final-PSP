@@ -15,7 +15,7 @@ public class Limpiadora extends Obrera {
                 System.out.print("-".repeat(80) + "\n");
                 System.out.println("Buscando a la reina de la colmena");
 
-                Socket socket = new Socket("127.0.0.1", 3000);
+                Socket socket = new Socket("127.0.0.1", 3001);
 
                 OutputStream outputStream = socket.getOutputStream();
                 DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
