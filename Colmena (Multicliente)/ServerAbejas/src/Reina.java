@@ -10,12 +10,18 @@ public class Reina extends Thread {
     private List<Socket> limpiadoras = new ArrayList<>();
     private List<DataOutputStream> limpiadorasOut = new ArrayList<>();
     private String passwordColmena;
+    private Soldado soldado;
 
     @Override
     public void run() {
         try {
             serverSocket = new ServerSocket(puerto);
             System.out.println("[Reina]: Esperando limpiadoras en el puerto " + puerto);
+
+            // Generar contraseña y asignarla al soldado
+            passwordColmena = generarPassword();
+            soldado = Soldado.getInstancia();
+            soldado.recibirPassword(passwordColmena);
 
             Thread aceptadorConexiones = new Thread(() -> {
                 while (running) {
@@ -33,6 +39,9 @@ public class Reina extends Thread {
                             }
 
                             new Thread(() -> atenderLimpiadora(socket, in, out, mensaje)).start();
+                        } else if (mensaje.equals("SOLICITAR_PASSWORD")) {
+                            System.out.println("[Reina]: Enviando contraseña al cliente");
+                            out.writeUTF(passwordColmena);
                         }
                     } catch (IOException e) {
                         if (running) {
@@ -60,7 +69,11 @@ public class Reina extends Thread {
 
     private String generarPassword() {
 //        return UUID.randomUUID().toString().substring(0, 8);
-        return "Yipikaiyee hijo de puta";
+        return "I see dead people";
+    }
+
+    private String getPasswordColmena() {
+        return passwordColmena;
     }
 
     private void atenderLimpiadora(Socket socket, DataInputStream in, DataOutputStream out, String idLimpiadora) {
