@@ -10,19 +10,12 @@ public class Reina extends Thread {
     private List<Socket> limpiadoras = new ArrayList<>();
     private List<DataOutputStream> limpiadorasOut = new ArrayList<>();
     private String passwordColmena;
-    private Soldado soldado;
 
     @Override
     public void run() {
         try {
             serverSocket = new ServerSocket(puerto);
             System.out.println("[Reina]: Esperando limpiadoras en el puerto " + puerto);
-
-            // Generar contraseña
-            passwordColmena = generarPassword();
-            soldado = new Soldado(passwordColmena);
-            soldado.start();
-            System.out.println("[Reina]: Soldado creado con contraseña: " + passwordColmena);
 
             Thread aceptadorConexiones = new Thread(() -> {
                 while (running) {
