@@ -1,0 +1,4 @@
+El proyecto Base del examen es con el que empecé el examen. Todos los cambios
+de son añadidos de ese proyecto.
+
+Proyecto del examen contiene la versión 2.0
